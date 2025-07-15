@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <title>Shopping Cart</title>
+     <style>
+          body {
+               background-color: #f3e8ff;
+               /* Light purple background */
+               font-family: 'Segoe UI', sans-serif;
+               margin: 0;
+               padding: 20px;
+          }
+
+          /* ✅ Main Cart Box */
+          .cart-container {
+               max-width: 900px;
+               margin: auto;
+               background: white;
+               padding: 20px;
+               border-radius: 16px;
+               box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+          }
+
+          /* ✅ Heading */
+          h1 {
+               text-align: center;
+               color: #2c3e50;
+          }
+
+          /* ✅ Table Styling */
+          #cart-table {
+               width: 100%;
+               border-collapse: collapse;
+               margin-top: 20px;
+               display: none;
+          }
+
+          th,
+          td {
+               text-align: center;
+               padding: 12px;
+               border-bottom: 1px solid #ddd;
+          }
+
+          th {
+               background-color: #6c2bd9;
+               color: white;
+          }
+
+          /* ✅ Quantity Input */
+          input[type="number"] {
+               width: 60px;
+               padding: 5px;
+               text-align: center;
+          }
+
+          /* ✅ Remove Button */
+          button {
+               background-color: #ff4d4d;
+               color: white;
+               padding: 6px 12px;
+               border: none;
+               border-radius: 6px;
+               cursor: pointer;
+          }
+
+          button:hover {
+               background-color: #e60000;
+          }
+
+          /* ✅ Total Price */
+          .total-price {
+               text-align: right;
+               font-size: 1.2em;
+               margin-top: 20px;
+               font-weight: bold;
+               display: none;
+          }
+
+          /* ✅ Empty Cart Section */
+          .empty-cart {
+               text-align: center;
+               margin-top: 40px;
+          }
+
+          .empty-cart img {
+               width: 200px;
+               margin-bottom: 20px;
+          }
+
+          .empty-cart h2 {
+               font-size: 24px;
+               margin-bottom: 10px;
+               color: #333;
+          }
+
+          .empty-cart p {
+               color: #666;
+               margin-bottom: 20px;
+          }
+
+          /* ✅ Start Shopping Button */
+          .shop-btn {
+               display: inline-block;
+               padding: 10px 20px;
+               background-color: #9b2c9b;
+               color: white;
+               text-decoration: none;
+               border-radius: 8px;
+               font-weight: bold;
+          }
+
+          .shop-btn:hover {
+               background-color: #7a1c7a;
+          }
+
+          /* ✅ Cart Action Buttons */
+          .cart-actions {
+               display: none;
+               justify-content: space-between;
+               margin-top: 20px;
+          }
+
+          .action-btn {
+               text-decoration: none;
+               padding: 12px 20px;
+               border-radius: 8px;
+               font-weight: bold;
+               font-size: 16px;
+               transition: background 0.3s ease;
+          }
+
+          .continue-btn {
+               background-color: #888;
+               color: white;
+          }
+
+          .continue-btn:hover {
+               background-color: #555;
+          }
+
+          .order-btn {
+               background-color: #28a745;
+               color: white;
+          }
+
+          .order-btn:hover {
+               background-color: #218838;
+          }
+
+          /* ✅ Animations */
+          .fade-in {
+               animation: fadeIn 0.4s ease-in;
+          }
+
+          @keyframes fadeIn {
+               from {
+                    opacity: 0;
+                    transform: translateY(10px);
+               }
+
+               to {
+                    opacity: 1;
+                    transform: translateY(0);
+               }
+          }
+
+          .fade-out {
+               animation: fadeOut 0.3s ease-out;
+          }
+
+          @keyframes fadeOut {
+               from {
+                    opacity: 1;
+                    transform: scale(1);
+               }
+
+               to {
+                    opacity: 0;
+                    transform: scale(0.95);
+               }
+          }
+     </style>
+</head>
+<script>
+     // ✅ Load cart from localStorage or start with an empty array
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// ✅ Display cart when the page loads
+window.onload = function () {
+  renderCart();
+};
+
+// ✅ Main function to display cart contents
+function renderCart() {
+  const cartBody = document.getElementById("cart-body");
+  const totalElement = document.getElementById("grand-total");
+  const cartTable = document.getElementById("cart-table");
+  const totalSection = document.getElementById("total-section");
+  const emptyCart = document.getElementById("empty-cart");
+  const actions = document.getElementById("cart-actions");
+
+  // Clear old rows and reset total
+  cartBody.innerHTML = "";
+  let total = 0;
+
+  // ✅ If cart is empty, show "empty cart" message
+  if (cart.length === 0) {
+    cartTable.style.display = "none";
+    totalSection.style.display = "none";
+    actions.style.display = "none";
+    emptyCart.style.display = "block";
+    return;
+  }
+
+  // ✅ If cart has items, show the table and buttons
+  emptyCart.style.display = "none";
+  cartTable.style.display = "table";
+  totalSection.style.display = "block";
+  actions.style.display = "flex";
+
+  // ✅ Create table rows for each item
+  cart.forEach((item, index) => {
+    let row = document.createElement("tr");
+    let itemTotal = item.price * item.qty;
+    total += itemTotal;
+
+    row.classList.add("fade-in");
+
+    row.innerHTML = `
+      <td>${item.name}</td>
+      <td>₹${item.price}</td>
+      <td>
+        <input type="number" min="1" value="${item.qty}" onchange="updateQty(${index}, this.value)">
+      </td>
+      <td>₹${itemTotal}</td>
+      <td>
+        <button onclick="removeItem(${index})">❌</button>
+      </td>
+    `;
+
+    cartBody.appendChild(row);
+  });
+
+  // ✅ Show grand total and save cart to localStorage
+  totalElement.innerText = total;
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+// ✅ Function to update quantity
+function updateQty(index, qty) {
+  cart[index].qty = parseInt(qty);
+  renderCart(); // Recalculate and refresh UI
+}
+
+// ✅ Function to remove item from cart with animation
+function removeItem(index) {
+  const rows = document.querySelectorAll("#cart-body tr");
+  const row = rows[index];
+
+  row.classList.add("fade-out");
+
+  setTimeout(() => {
+    cart.splice(index, 1); // Remove item from array
+    renderCart();          // Refresh UI
+  }, 300); // Wait for animation to finish
+}
+</script>
+<body>
+
+     <div class="cart-container">
+          <h1>🛒 My Cart</h1>
+
+          <!-- ✅ Empty Cart Message -->
+          <div id="empty-cart" class="empty-cart">
+               <img src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png" alt="Empty Cart">
+               <h2>Your cart is empty</h2>
+               <p>Just relax, let us help you find some first-class products</p>
+               <a href="home.html" class="shop-btn">Start Shopping</a>
+          </div>
+
+          <!-- ✅ Cart Table -->
+          <table id="cart-table">
+               <thead>
+                    <tr>
+                         <th>Item</th>
+                         <th>Price</th>
+                         <th>Qty</th>
+                         <th>Total</th>
+                         <th>Remove</th>
+                    </tr>
+               </thead>
+               <tbody id="cart-body"></tbody>
+          </table>
+
+          <!-- ✅ Total Section -->
+          <div class="total-price" id="total-section">
+               Grand Total: ₹<span id="grand-total">0</span>
+          </div>
+
+          <!-- ✅ Action Buttons -->
+          <div class="cart-actions" id="cart-actions">
+               <a href="home.html" class="action-btn continue-btn">← Continue Shopping</a>
+               <a href="order.html" class="action-btn order-btn">Place Order →</a>
+          </div>
+     </div>
+</body>
+</html>
