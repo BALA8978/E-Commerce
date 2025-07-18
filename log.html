@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | TapnShop</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      position: relative;
+    }
+
+    /* Top-left Logo */
+    .top-logo {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      z-index: 10;
+    }
+
+    .top-logo img {
+      width: 120px;
+      height: auto;
+    }
+
+    /* Top-right Sign Up button */
+    .top-signup {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      z-index: 10;
+    }
+
+    .top-signup a {
+      background-color: #9b2c9b;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .top-signup a:hover {
+      background-color: #7c1e7c;
+    }
+
+    /* Left Login Section */
+    .left {
+      flex: 1;
+      background-color: #9b2c9b;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .form-box {
+      width: 100%;
+      max-width: 380px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .form-box h2 {
+      margin-bottom: 25px;
+      font-size: 24px;
+      font-family: 'Lucida Handwriting', cursive;
+    }
+
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+    }
+
+    .form-box a.forgot {
+      display: block;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: #eee;
+      text-align: right;
+      text-decoration: none;
+    }
+
+    .form-box button {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background-color: white;
+      color: #9b2c9b;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .form-box button:hover {
+      background-color: #f0f0f0;
+    }
+
+    .form-box .signup-text {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .form-box .signup-text a {
+      color: #fff;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    /* Right Image Section */
+    .right {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .left, .right {
+        width: 100%;
+        height: 50%;
+      }
+
+      .top-logo {
+        top: 10px;
+        left: 10px;
+      }
+
+      .top-signup {
+        top: 10px;
+        right: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Logo -->
+    <div class="top-logo">
+      <img src="your-logo-url-here" alt="TapnShop Logo" />
+    </div>
+
+    <!-- Sign Up Button -->
+    <div class="top-signup">
+      <a href="signup.html">Sign Up</a>
+    </div>
+
+    <!-- Left Side: Login -->
+    <div class="left">
+      <div class="form-box">
+        <h2>Login to TapnShop</h2>
+        <form>
+          <input type="email" placeholder="Enter your email" required />
+          <input type="password" placeholder="Enter your password" required />
+          <a href="#" class="forgot">Forgot Password?</a>
+          <button type="submit">Login</button>
+          <p class="signup-text">Don't have an account? <a href="signup.html">Sign Up</a></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right Side: Image -->
+    <div class="right">
+      <img src="https://img.freepik.com/premium-photo/shopping-cart-shopping-bags-product-box-put-laptop-which-is-online-shop-store-internet-digital-market-concept-marketing-digital-marketing-communication-3d-rendering_42098-145.jpg" alt="Shopping Image" />
+    </div>
+
+  </div>
+</body>
+</html>
