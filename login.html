@@ -3,143 +3,200 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login Page</title>
+  <title>Login | TapnShop</title>
   <style>
     * {
-      box-sizing: border-box;
-      padding: 0;
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background: linear-gradient(to right, #74ebd5, #acb6e5);
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      position: relative;
+    }
+
+    /* Top-left Logo */
+    .top-logo {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      z-index: 10;
+    }
+
+    .top-logo img {
+      width: 120px;
+      height: auto;
+    }
+
+    /* Top-right Sign Up button */
+    .top-signup {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      z-index: 10;
+    }
+
+    .top-signup a {
+      background-color: #9b2c9b;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .top-signup a:hover {
+      background-color: #7c1e7c;
+    }
+
+    /* Left Login Section */
+    .left {
+      flex: 1;
+      background-color: #9b2c9b;
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      position: relative;
     }
 
-    .login-container {
-      background-color: #fff;
-      padding: 30px 40px;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      width: 350px;
+    .form-box {
+      width: 100%;
+      max-width: 380px;
+      padding: 20px;
       text-align: center;
     }
 
-    .login-container h2 {
-      margin-bottom: 20px;
-      color: #333;
+    .form-box h2 {
+      margin-bottom: 25px;
+      font-size: 24px;
+      font-family: 'Lucida Handwriting', cursive;
     }
 
-    input {
+    input[type="email"], input[type="password"] {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
+      padding: 14px;
+      margin: 12px 0;
       border-radius: 6px;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      background-color: #28a745;
-      color: white;
-      padding: 12px;
       border: none;
-      border-radius: 6px;
-      cursor: pointer;
       font-size: 16px;
-      margin-top: 10px;
     }
 
-    button:hover {
-      background-color: #218838;
-    }
-
-    .signup-link {
-      margin-top: 15px;
+    .form-box a.forgot {
+      display: block;
+      margin-bottom: 16px;
       font-size: 14px;
-    }
-
-    .signup-link a {
-      color: #007bff;
+      color: #eee;
+      text-align: right;
       text-decoration: none;
     }
 
-    .signup-link a:hover {
+    .form-box button {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background-color: white;
+      color: #9b2c9b;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .form-box button:hover {
+      background-color: #f0f0f0;
+    }
+
+    .form-box .signup-text {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .form-box .signup-text a {
+      color: #fff;
+      font-weight: bold;
       text-decoration: underline;
     }
 
-    .message {
-      margin-top: 15px;
-      padding: 10px;
-      border-radius: 6px;
-      display: none;
+    /* Right Image Section */
+    .right {
+      flex: 1;
+      overflow: hidden;
     }
 
-    .error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+    .right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
-    .success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .left, .right {
+        width: 100%;
+        height: 50%;
+      }
+
+      .top-logo {
+        top: 10px;
+        left: 10px;
+      }
+
+      .top-signup {
+        top: 10px;
+        right: 10px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
 
-  <div class="login-container">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input type="text" id="username" placeholder="Enter Username" required />
-      <input type="password" id="password" placeholder="Enter Password" required />
-      <button type="submit">Login</button>
-    </form>
-    <div class="signup-link">
-      Don’t have an account? <a href="signup.html">Sign up</a>
+    <!-- Logo -->
+    <div class="top-logo">
+      <img src="your-logo-url-here" alt="TapnShop Logo" />
     </div>
-    <div id="messageBox" class="message"></div>
+
+    <!-- Sign Up Button -->
+    <div class="top-signup">
+      <a href="signup.html">Sign Up</a>
+    </div>
+
+    <!-- Left Side: Login -->
+    <div class="left">
+      <div class="form-box">
+        <h2>Login to TapnShop</h2>
+        <form>
+          <input type="email" placeholder="Enter your email" required />
+          <input type="password" placeholder="Enter your password" required />
+          <a href="#" class="forgot">Forgot Password?</a>
+          <button type="submit">Login</button>
+          <p class="signup-text">Don't have an account? <a href="signup.html">Sign Up</a></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right Side: Image -->
+    <div class="right">
+      <img src="https://img.freepik.com/premium-photo/shopping-cart-shopping-bags-product-box-put-laptop-which-is-online-shop-store-internet-digital-market-concept-marketing-digital-marketing-communication-3d-rendering_42098-145.jpg" alt="Shopping Image" />
+    </div>
+
   </div>
-
-  <script>
-    const form = document.getElementById("loginForm");
-    const usernameInput = document.getElementById("username");
-    const passwordInput = document.getElementById("password");
-    const messageBox = document.getElementById("messageBox");
-
-    // ✅ Change this to your real login credentials or logic
-    const validUsername = "admin";
-    const validPassword = "12345";
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const username = usernameInput.value.trim();
-      const password = passwordInput.value.trim();
-
-      if (username === validUsername && password === validPassword) {
-        messageBox.textContent = "✅ Login Successful!";
-        messageBox.className = "message success";
-        messageBox.style.display = "block";
-
-        // Redirect to home page after 1 second
-        setTimeout(() => {
-          window.location.href = "home.html";
-        }, 1000);
-      } else {
-        messageBox.textContent = "❌ Username or Password is incorrect.";
-        messageBox.className = "message error";
-        messageBox.style.display = "block";
-      }
-    });
-  </script>
-
 </body>
 </html>
