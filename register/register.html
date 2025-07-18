@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #9b2c9b;
+    }
+
+    .card {
+      position: relative;
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      padding: 2.5rem 3rem;
+      max-width: 550px;
+      width: 100%;
+      color: #333;
+      animation: slideFadeIn 0.6s ease-out;
+    }
+
+    @keyframes slideFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-inside {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #fff;
+      border: 3px solid #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo-inside img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .tagline {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin: 0.75rem 0 0.25rem;
+      font-size: 0.95rem;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    input::placeholder {
+      color: #ccc;
+      font-style: italic;
+    }
+
+    .checkbox {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .checkbox label {
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .checkbox input[type="checkbox"] {
+      transform: scale(1.2);
+      margin: 0;
+    }
+
+    .actions {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    button {
+      padding: 0.7rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      background: linear-gradient(90deg, #d946ef, #7c3aed);
+      color: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(217, 70, 239, 0.4);
+    }
+
+    @media (max-width: 500px) {
+      .card {
+        padding: 2rem 1.5rem;
+      }
+
+      .logo-inside {
+        width: 50px;
+        height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <!-- Logo -->
+    <div class="logo-inside">
+      <img src="logo.jpg" alt="TAPNshop Logo" />
+    </div>
+
+    <h2>Create Your Account</h2>
+    <div class="tagline">Fast, secure & easy shopping with TAPNshop</div>
+
+    <form id="registrationForm">
+      <label for="fname">First Name</label>
+      <input type="text" id="fname" name="fname" required placeholder="John" />
+
+      <label for="lname">Last Name</label>
+      <input type="text" id="lname" name="lname" required placeholder="Doe" />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required placeholder="example@domain.com" />
+
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="10-digit number" required />
+
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender" required>
+        <option value="">-- Select Gender --</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob" name="dob" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" minlength="6" required />
+
+      <label for="confirm">Confirm Password</label>
+      <input type="password" id="confirm" name="confirm" minlength="6" required />
+
+      <div class="checkbox">
+        <label for="terms">
+          <input type="checkbox" id="terms" required />
+          I agree to the terms and conditions
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Register</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("registrationForm");
+
+    form.addEventListener("submit", function (e) {
+      const password = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm").value;
+      const terms = document.getElementById("terms").checked;
+
+      if (password !== confirm) {
+        alert("Passwords do not match!");
+        e.preventDefault();
+        return;
+      }
+
+      if (!terms) {
+        alert("Please accept the terms and conditions.");
+        e.preventDefault();
+        return;
+      }
+
+      // Simulate success (replace with backend logic if needed)
+      e.preventDefault();
+      alert("🎉 Registration Successful! Welcome to TAPNshop!");
+      form.reset();
+    });
+  </script>
+</body>
+</html>
