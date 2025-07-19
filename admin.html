@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Admin</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+
+        /* --- Login Page Styles --- */
+        #login-page {
+    display: flex;
+    height: 100vh;
+}
+
+.login-image {
+    flex: 1;
+    background-image: url('https://previews.123rf.com/images/denisxize/denisxize1706/denisxize170600540/81003101-online-shopping-concept-with-hands-of-seller-and-buyer-from-computer.jpg'); /* your image file */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.login-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 40px;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+        .login-container h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .login-container .footer-text {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #777;
+        }
+	.login-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background-color: #e6f2ff; /* light blue */
+    text-align: center;
+}
+
+
+        /* --- Admin Panel Styles --- */
+        #admin-panel {
+            display: none; /* Hidden by default */
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        nav ul li a:hover {
+            background-color: #555;
+            border-radius: 4px;
+        }
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: #333;
+            color: white;
+            margin-top: 20px;
+        }
+        .page-section {
+            display: none;
+        }
+        .page-section.active {
+            display: block;
+        }
+        form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"],
+        form input[type="number"],
+        form input[type="date"],
+        form textarea,
+        form select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        form button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        form button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
+        .summary-cards {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .card {
+            background-color: #e9e9e9;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 200px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .card h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        .status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .status.pending { background-color: #ffc107; color: #333; }
+        .status.processing { background-color: #17a2b8; color: white; }
+        .status.shipped { background-color: #6f42c1; color: white; }
+        .status.delivered { background-color: #28a745; color: white; }
+        .status.cancelled { background-color: #dc3545; color: white; }
+        .report-output {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-page">
+    <div class="login-image"></div>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Admin Panel Login</h1>
+            <form id="loginForm">
+                <label for="loginUsername">Username or Email:</label>
+                <input type="text" id="loginUsername" name="username" required>
+                
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" name="password" required>
+                
+                <button type="submit" style="width: 100%; padding: 12px 20px; background-color:  #dc3545; color: white; border: none;">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    <div id="admin-panel">
+        <header>
+            <h1>E-commerce Admin Panel</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" data-page="dashboard">Dashboard</a></li>
+                    <li><a href="#" data-page="users">Users & Roles</a></li>
+                    <li><a href="#" data-page="products">Products & Categories</a></li>
+                    <li><a href="#" data-page="stock">Stock Levels</a></li>
+                    <li><a href="#" data-page="orders">Orders</a></li>
+                    <li><a href="#" data-page="reports">Reports</a></li>
+                    <li><a href="#" id="logout-link">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="dashboard-page" class="page-section active">
+                <h2 class="section-title">Welcome, Admin!</h2>
+                <p>Quick overview of your E-commerce system.</p>
+                <div class="summary-cards">
+                    <div class="card"><h3>Total Products</h3><p>1200</p></div>
+                    <div class="card"><h3>Pending Orders</h3><p>15</p></div>
+                    <div class="card"><h3>Low Stock Items</h3><p>8</p></div>
+                </div>
+            </section>
+            <section id="users-page" class="page-section">
+                <h2 class="section-title">Manage Users and Roles</h2>
+                <section class="add-user">
+                    <h3>Add New User</h3>
+                    <form id="addUserForm">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                        <label for="role">Role:</label>
+                        <select id="role" name="role">
+                            <option value="admin">Admin</option>
+                            <option value="editor">Editor</option>
+                            <option value="viewer">Viewer</option>
+                        </select>
+                        <button type="submit">Add User</button>
+                    </form>
+                </section>
+                <section class="user-list">
+                    <h3>Existing Users</h3>
+                    <table id="userTable">
+                        <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>admin_user</td><td>admin@example.com</td><td>Admin</td><td><button onclick="editUser(1)">Edit</button><button onclick="deleteUser(1)">Delete</button></td></tr>
+                            <tr><td>2</td><td>john_doe</td><td>john.doe@example.com</td><td>Editor</td><td><button onclick="editUser(2)">Edit</button><button onclick="deleteUser(2)">Delete</button></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+            <section id="products-page" class="page-section">
+                 <h2 class="section-title">Manage Products and Categories</h2>
+                <section class="add-product">
+                    <h3>Add New Product</h3>
+                    <form id="addProductForm">
+                        <label for="productName">Product Name:</label><input type="text" id="productName" name="productName" required>
+                        <label for="productDescription">Description:</label><textarea id="productDescription" name="productDescription" rows="4"></textarea>
+                        <label for="productPrice">Price:</label><input type="number" id="productPrice" name="productPrice" step="0.01" min="0" required>
+                        <label for="productCategory">Category:</label>
+                        <select id="productCategory" name="productCategory">
+                            <option value="electronics">Electronics</option><option value="clothing">Clothing</option><option value="books">Books</option><option value="home">Home Goods</option>
+                        </select>
+                        <label for="productSKU">SKU:</label><input type="text" id="productSKU" name="productSKU">
+                        <button type="submit">Add Product</button>
+                    </form>
+                </section>
+                 <section class="product-list">
+                    <h3>Existing Products</h3>
+                    <table id="productTable">
+                       <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>SKU</th><th>Actions</th></tr></thead>
+                       <tbody>
+                            <tr><td>101</td><td>Laptop Pro</td><td>Electronics</td><td>$1200.00</td><td>LAPTOP-PRO-001</td><td><button onclick="editProduct(101)">Edit</button><button onclick="deleteProduct(101)">Delete</button></td></tr>
+                            <tr><td>102</td><td>T-Shirt Basic</td><td>Clothing</td><td>$25.00</td><td>TSHIRT-BASIC-RED-M</td><td><button onclick="editProduct(102)">Edit</button><button onclick="deleteProduct(102)">Delete</button></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section class="manage-categories">
+                    <h3>Manage Categories</h3>
+                    <form id="addCategoryForm"><label for="categoryName">Category Name:</label><input type="text" id="categoryName" name="categoryName" required><button type="submit">Add Category</button></form>
+                    <table id="categoryTable">
+                        <thead><tr><th>ID</th><th>Category Name</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>Electronics</td><td><button onclick="editCategory(1)">Edit</button><button onclick="deleteCategory(1)">Delete</button></td></tr>
+                            <tr><td>2</td><td>Clothing</td><td><button onclick="editCategory(2)">Edit</button><button onclick="deleteCategory(2)">Delete</button></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+            <section id="stock-page" class="page-section">
+                <h2 class="section-title">Manage Stock Levels</h2>
+                <section class="stock-search">
+                    <h3>Search and Update Stock</h3>
+                    <input type="text" id="stockSearchInput" placeholder="Search by Product Name or SKU"><button onclick="searchStock()">Search</button>
+                </section>
+                <section class="stock-list">
+                    <h3>Current Stock Levels</h3>
+                    <table id="stockTable">
+                        <thead><tr><th>Product ID</th><th>Product Name</th><th>SKU</th><th>Current Stock</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>101</td><td>Laptop Pro</td><td>LAPTOP-PRO-001</td><td><input type="number" value="50" id="stock_101" min="0"></td><td><button onclick="updateStock(101)">Update</button></td></tr>
+                            <tr><td>102</td><td>T-Shirt Basic</td><td>TSHIRT-BASIC-RED-M</td><td><input type="number" value="200" id="stock_102" min="0"></td><td><button onclick="updateStock(102)">Update</button></td></tr>
+                            <tr><td>103</td><td>Wireless Mouse</td><td>MOUSE-WIRELESS-BLK</td><td><input type="number" value="10" id="stock_103" min="0" style="background-color: #ffe0e0;"></td><td><button onclick="updateStock(103)">Update</button></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+            <section id="orders-page" class="page-section">
+                <h2 class="section-title">Process and Track Orders</h2>
+                <section class="order-filter">
+                    <h3>Filter Orders</h3>
+                    <label for="orderStatusFilter">Status:</label>
+                    <select id="orderStatusFilter" onchange="filterOrders()">
+                        <option value="all">All</option><option value="pending">Pending</option><option value="processing">Processing</option><option value="shipped">Shipped</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option>
+                    </select>
+                </section>
+                <section class="order-list">
+                    <h3>Recent Orders</h3>
+                    <table id="orderTable">
+                        <thead><tr><th>Order ID</th><th>Customer Name</th><th>Date</th><th>Total Amount</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr data-status="pending"><td>#001</td><td>Alice Smith</td><td>2025-07-15</td><td>$150.00</td><td><span class="status pending">Pending</span></td><td><button onclick="viewOrderDetails('#001')">View</button><button onclick="updateOrderStatus('#001', 'processing')">Process</button></td></tr>
+                            <tr data-status="processing"><td>#002</td><td>Bob Johnson</td><td>2025-07-14</td><td>$75.50</td><td><span class="status processing">Processing</span></td><td><button onclick="viewOrderDetails('#002')">View</button><button onclick="updateOrderStatus('#002', 'shipped')">Ship</button></td></tr>
+                            <tr data-status="delivered"><td>#003</td><td>Charlie Brown</td><td>2025-07-10</td><td>$220.00</td><td><span class="status delivered">Delivered</span></td><td><button onclick="viewOrderDetails('#003')">View</button></td></tr>
+                            <tr data-status="pending"><td>#004</td><td>Diana Prince</td><td>2025-07-16</td><td>$45.00</td><td><span class="status pending">Pending</span></td><td><button onclick="viewOrderDetails('#004')">View</button><button onclick="updateOrderStatus('#004', 'processing')">Process</button></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+            <section id="reports-page" class="page-section">
+                <h2 class="section-title">Sales and Inventory Reports</h2>
+                 <section class="sales-report">
+                    <h3>Sales Reports</h3>
+                    <form id="salesReportForm">
+                        <label for="salesPeriod">Select Period:</label>
+                        <select id="salesPeriod" name="salesPeriod"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select>
+                        <label for="startDate">Start Date:</label><input type="date" id="startDate" name="startDate">
+                        <label for="endDate">End Date:</label><input type="date" id="endDate" name="endDate">
+                        <button type="button" onclick="generateSalesReport()">Generate Sales Report</button>
+                    </form>
+                    <div id="salesReportOutput" class="report-output"><h4>Sales Summary (Example)</h4><p><strong>Total Revenue:</strong> $15,000.00</p><p><strong>Total Orders:</strong> 120</p></div>
+                </section>
+                <section class="inventory-report">
+                    <h3>Inventory Reports</h3>
+                    <form id="inventoryReportForm">
+                        <label for="inventoryType">Report Type:</label>
+                        <select id="inventoryType" name="inventoryType"><option value="current">Current Stock</option><option value="low_stock">Low Stock</option></select>
+                        <button type="button" onclick="generateInventoryReport()">Generate Inventory Report</button>
+                    </form>
+                    <div id="inventoryReportOutput" class="report-output"><h4>Low Stock Items (Example)</h4><ul><li>Wireless Mouse - Stock: 10</li></ul></div>
+                </section>
+            </section>
+        </main>
+
+        
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginPage = document.getElementById('login-page');
+            const adminPanel = document.getElementById('admin-panel');
+            const loginForm = document.getElementById('loginForm');
+            const logoutLink = document.getElementById('logout-link');
+            const navLinks = document.querySelectorAll('nav ul li a[data-page]');
+            const pageSections = document.querySelectorAll('.page-section');
+
+            // --- Login Logic ---
+loginForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const username = loginForm.loginUsername.value.trim();
+    const password = loginForm.loginPassword.value.trim();
+
+    // Simple email regex for validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (username === '') {
+        alert('Username or email is required.');
+        return;
+    }
+
+    if (!emailRegex.test(username) && username.indexOf(' ') >= 0) {
+        alert('Please enter a valid email or username without spaces.');
+        return;
+    }
+
+    if (password === '') {
+        alert('Password is required.');
+        return;
+    }
+
+    if (password.length < 6) {
+        alert('Password must be at least 6 characters long.');
+        return;
+    }
+
+    alert('Login successful! Welcome.');
+    loginPage.style.display = 'none';
+    adminPanel.style.display = 'block';
+    document.body.style.height = 'auto';
+    document.body.style.alignItems = 'normal';
+    document.body.style.justifyContent = 'normal';
+});
+
+
+            // --- Logout Logic ---
+            logoutLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (confirm('Are you sure you want to log out?')) {
+                    adminPanel.style.display = 'none';
+                    loginPage.style.display = 'flex';
+                    document.body.style.height = '100vh';
+                    document.body.style.alignItems = 'center';
+                    document.body.style.justifyContent = 'center';
+                }
+            });
+
+            // --- Navigation Logic ---
+            navLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const targetPageId = event.target.dataset.page + '-page';
+
+                    pageSections.forEach(section => section.classList.remove('active'));
+                    const targetSection = document.getElementById(targetPageId);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                });
+            });
+
+            // --- Form and Action Handlers ---
+
+            // Users
+            document.getElementById('addUserForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert(`User '${this.username.value}' added.`);
+                this.reset();
+            });
+            window.editUser = (id) => alert('Edit user with ID: ' + id);
+            window.deleteUser = (id) => confirm('Delete user with ID: ' + id + '?') && alert('User deleted.');
+
+            // Products
+            document.getElementById('addProductForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert(`Product '${this.productName.value}' added.`);
+                this.reset();
+            });
+            window.editProduct = (id) => alert('Edit product with ID: ' + id);
+            window.deleteProduct = (id) => confirm('Delete product with ID: ' + id + '?') && alert('Product deleted.');
+
+            // Categories
+            document.getElementById('addCategoryForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert(`Category '${this.categoryName.value}' added.`);
+                this.reset();
+            });
+            window.editCategory = (id) => alert('Edit category with ID: ' + id);
+            window.deleteCategory = (id) => confirm('Delete category with ID: ' + id + '?') && alert('Category deleted.');
+
+            // Stock
+            window.updateStock = (productId) => {
+                const newStock = document.getElementById('stock_' + productId).value;
+                alert(`Updating stock for Product ID ${productId} to ${newStock}.`);
+            };
+            window.searchStock = () => {
+                const searchTerm = document.getElementById('stockSearchInput').value.toLowerCase();
+                const rows = document.getElementById('stockTable').getElementsByTagName('tbody')[0].rows;
+                Array.from(rows).forEach(row => {
+                    const name = row.cells[1].textContent.toLowerCase();
+                    const sku = row.cells[2].textContent.toLowerCase();
+                    row.style.display = (name.includes(searchTerm) || sku.includes(searchTerm)) ? '' : 'none';
+                });
+            };
+
+            // Orders
+            window.viewOrderDetails = (orderId) => alert('Viewing details for Order ID: ' + orderId);
+            window.updateOrderStatus = (orderId, newStatus) => {
+                alert(`Updating Order ID ${orderId} to status: ${newStatus}`);
+                const orderRows = document.querySelectorAll('#orderTable tbody tr');
+                orderRows.forEach(row => {
+                    if (row.querySelector('td:first-child').textContent === orderId) {
+                        const statusSpan = row.querySelector('.status');
+                        statusSpan.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+                        statusSpan.className = `status ${newStatus}`;
+                        row.setAttribute('data-status', newStatus);
+                    }
+                });
+            };
+            window.filterOrders = () => {
+                const selectedStatus = document.getElementById('orderStatusFilter').value;
+                const rows = document.getElementById('orderTable').getElementsByTagName('tbody')[0].rows;
+                Array.from(rows).forEach(row => {
+                    const status = row.getAttribute('data-status');
+                    row.style.display = (selectedStatus === 'all' || status === selectedStatus) ? '' : 'none';
+                });
+            };
+
+            // Reports
+            window.generateSalesReport = () => alert('Sales report generation simulated.');
+            window.generateInventoryReport = () => alert('Inventory report generation simulated.');
+        });
+
+    </script>
+</body>
+</html>
